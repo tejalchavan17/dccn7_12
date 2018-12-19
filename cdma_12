@@ -1,0 +1,256 @@
+Client1:
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class client1
+{
+    public static void main(String args[])throws Exception
+    {
+        Socket s=new Socket("localhost",2200);
+        BufferedReader sin=new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintStream sout=new PrintStream(s.getOutputStream());
+        Scanner sc=new Scanner(System.in);
+        
+        int n,i;
+        int[] coden=new int[20];
+        int[] code={1,1};
+		
+		System.out.print("Code : ");
+		for(i=0;i<2;i++)
+			System.out.print(code[i]+" ");
+		
+		System.out.println();
+		
+        System.out.print("Enter data(1,-1,0) : ");
+        n=sc.nextInt();
+				
+		for(i=0;i<2;i++)
+			coden[i]=code[i]*n;
+		
+		for(i=0;i<2;i++)
+			sout.println(coden[i]);
+	}
+}
+									
+Client2:
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class client2
+{
+    public static void main(String args[])throws Exception
+    {
+        Socket s=new Socket("localhost",2000);
+        BufferedReader sin=new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintStream sout=new PrintStream(s.getOutputStream());
+        Scanner sc=new Scanner(System.in);
+        
+        int n,i;
+        int[] coden=new int[20];
+        int[] code={1,-1};
+		               
+		System.out.print("Code : ");
+		for(i=0;i<2;i++)
+			System.out.print(code[i]+" ");
+		
+		System.out.println();
+		
+        System.out.print("Enter data(1,-1,0) : ");
+        n=sc.nextInt();         
+					
+		for(i=0;i<2;i++)
+			coden[i]=code[i]*n;
+		
+		for(i=0;i<2;i++)
+			sout.println(coden[i]);
+	}
+}
+									
+Client3:
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class client3
+{
+    public static void main(String args[])throws Exception
+    {
+        Socket s=new Socket("localhost",2005);
+        BufferedReader sin=new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintStream sout=new PrintStream(s.getOutputStream());
+        Scanner sc=new Scanner(System.in);
+	
+		int[] code={1,1};
+		int[] data_on_channel=new int[20];
+		int[] aftermul=new int[20];
+		int temp =0,i;
+
+		for(i=0;i<2;i++)            
+			data_on_channel[i]=Integer.parseInt(sin.readLine());
+
+		System.out.print("Data On Channel : ");
+		for(i=0;i<2;i++)
+			System.out.print(data_on_channel[i]+" ");
+		
+		System.out.println();
+		
+		System.out.print("Client1 Code : ");
+		for(i=0;i<2;i++)
+			System.out.print(code[i]+" ");
+		
+		for(i=0;i<2;i++)
+			aftermul[i]=data_on_channel[i]*code[i];
+
+		for(i=0;i<2;i++)
+			temp = temp + aftermul[i];		
+		System.out.println();
+		System.out.println("Data Sent By Client1 : "+temp/2);
+	}
+}
+Client4:
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class client4
+{
+    public static void main(String args[])throws Exception
+    {
+        Socket s=new Socket("localhost",2001);
+        BufferedReader sin=new BufferedReader(new InputStreamReader(s.getInputStream()));
+        PrintStream sout=new PrintStream(s.getOutputStream());
+        Scanner sc=new Scanner(System.in);
+
+		int[] code={1,-1};
+		int[] aftermul=new int[20];
+		int[] data_on_channel=new int[20];
+		int temp =0,i;
+
+		for(i=0;i<2;i++)            
+			data_on_channel[i]=Integer.parseInt(sin.readLine());
+		
+		System.out.print("Data On Channel : ");
+		for(i=0;i<2;i++)
+			System.out.print(data_on_channel[i]+" ");
+		
+		System.out.println();
+		
+		System.out.print("Client2 Code : ");
+		for(i=0;i<2;i++)
+			System.out.print(code[i]+" ");
+		
+		for(i=0;i<2;i++)
+			aftermul[i]=data_on_channel[i]*code[i];
+
+		for(i=0;i<2;i++)
+			temp = temp + aftermul[i];		
+		System.out.println();
+		System.out.println("Data Sent By Client2 : "+temp/2);
+		
+	}
+}
+Server:
+import java.net.*;
+import java.io.*;
+
+public class server
+{
+    public static void main(String args[])throws Exception
+    {
+        ServerSocket ss1=new ServerSocket(2200);
+        Socket s1=ss1.accept();
+        BufferedReader sin1=new BufferedReader(new InputStreamReader(s1.getInputStream()));
+        PrintStream sout1=new PrintStream(s1.getOutputStream());        
+               
+              
+        ServerSocket ss2=new ServerSocket(2000);
+        Socket s2=ss2.accept();
+        BufferedReader sin2=new BufferedReader(new InputStreamReader(s2.getInputStream()));
+        PrintStream sout2=new PrintStream(s2.getOutputStream());        
+
+		ServerSocket ss3=new ServerSocket(2005);
+        Socket s3=ss3.accept();
+        BufferedReader sin3=new BufferedReader(new InputStreamReader(s1.getInputStream()));
+        PrintStream sout3=new PrintStream(s3.getOutputStream());        
+                
+        ServerSocket ss4=new ServerSocket(2001);
+        Socket s4=ss4.accept();
+        BufferedReader sin4=new BufferedReader(new InputStreamReader(s2.getInputStream()));
+        PrintStream sout4=new PrintStream(s4.getOutputStream());        
+
+		int i;
+		
+		int[] code1n=new int[20];		
+		int[] code2n=new int[20];
+		int[] data_on_channel=new int[20];
+		    
+		for(i=0;i<2;i++)            
+			code1n[i]=Integer.parseInt(sin1.readLine());		
+	
+		for(i=0;i<2;i++)            
+			code2n[i]=Integer.parseInt(sin2.readLine());
+		
+		System.out.print("Message From Client1 : ");
+		for(i=0;i<2;i++)
+			System.out.print(code1n[i]+" ");		
+		
+		System.out.println();
+		
+		System.out.print("Message From Client2 : ");
+		for(i=0;i<2;i++)
+			System.out.print(code2n[i]+" ");
+		
+		for(i=0;i<2;i++)
+			data_on_channel[i]=code1n[i]+code2n[i];
+		
+		System.out.println();
+		
+		System.out.print("Data On Channel : ");
+		for(i=0;i<2;i++)
+			System.out.print(data_on_channel[i]+" ");
+		
+		for(i=0;i<2;i++)
+			sout3.println(data_on_channel[i]);
+
+		for(i=0;i<2;i++)
+			sout4.println(data_on_channel[i]);
+		
+	}
+}
+
+/* output
+Client1:
+tejal@ubuntu:~/Desktop$ javac client1.java
+tejal@ubuntu:~/Desktop$ java client1
+Code : 1 1 
+Enter data(1,-1,0) : 0
+
+Client2:
+tejal@ubuntu:~/Desktop$ javac client2.java
+tejal@ubuntu:~/Desktop$ java client2
+Code : 1 -1 
+Enter data(1,-1,0) : -1
+
+Server:
+tejal@ubuntu:~/Desktop$ javac server.java
+tejal@ubuntu:~/Desktop$ java server
+Message From Client1 : 0 0 
+Message From Client2 : -1 1 
+Data On Channel : -1 1 
+
+Client3:
+tejal@ubuntu:~/Desktop$ javac client3.java
+tejal@ubuntu:~/Desktop$ java client3
+Data On Channel : -1 1 
+Client1 Code : 1 1 
+Data Sent By Client1 : 0 
+
+Client4:
+tejal@ubuntu:~/Desktop$ javac client4.java
+tejal@ubuntu:~/Desktop$ java client4
+Data On Channel : -1 1 
+Client2 Code : 1 -1 
+Data Sent By Client2 : -1
+*/
